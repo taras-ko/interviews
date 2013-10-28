@@ -1,2 +1,2 @@
 CFLAGS = -g
-LDFLAGS = -lm
+default: list

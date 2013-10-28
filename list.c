@@ -1,21 +1,20 @@
 #include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 
 typedef struct list {
 	struct list *next;
-	char val;
+	char *str;
 } List;
 
-void print_list(struct list *head) {
-	struct list *p;
-
-	for (p = head; p != NULL; p = p->next)
-		printf("%c ", p->val);
-
-	putchar('\n');
+void print_list(List *l) {
+	if (l == NULL) return;
+	print_list(l->next);
+	printf("%s ", l->str);
 }
 
-void reverse(struct list *head) {
-	struct list *prev, *next, *current, *tail;
+List *reverse(List *head) {
+	List *prev, *next, *current, *tail;
 
 	prev = NULL;
 	current = head;
@@ -31,33 +30,30 @@ void reverse(struct list *head) {
 
 	tail = current;
 	tail->next = prev;
+
+	return tail;
+}
+
+List *add_elem(List *token, const char *s)
+{
+	List *new = (List *)malloc(sizeof(List));
+	new->str = strdup(s);
+	new->next = token;
+
+	return new;
 }
 
 main(int argc, char **argv)
 {
-	List a, b, c, d, e;
-	List *head;
-	List *list[] = {a, b, c, d, e};
+	List *l;
+	List **list;
 
-	while (--argc > 0)
-//		add_element(*++argv);
+	l = NULL;
+	while (--argc > 0) {
+		l = add_elem(l, *++argv);
+	}
 
-	/*
-	a.val = 'a';
-	a.next = &b;
-	b.val = 'b';
-	b.next = &c;
-	c.val = 'c';
-	c.next = &d;
-	d.val = 'd';
-	d.next = &e;
-	e.val = 'e';
-	e.next = NULL;
+	l = reverse(l);
 
-	print_list(&a);
-
-	reverse(&a);
-
-	print_list(&e);
-	*/
+	print_list(l);
 }
